@@ -4,8 +4,8 @@ package model;
 * Created by marcin on 15/03/15.
 */
 public class Card {
-    Suite suite;
-    Rank rank;
+    private Suite suite;
+    private Rank rank;
 
     public Suite getSuite() {
         return suite;
@@ -21,7 +21,7 @@ public class Card {
     }
 
     public boolean equals(Object that) {
-        if (that == null) return this == null;
+        if (that == null) return false;
         if (!(that instanceof Card)) return false;
         Card t = (Card) that;
         return this.suite == t.suite && this.rank == t.rank;

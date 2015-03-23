@@ -6,8 +6,8 @@ import java.util.List;
 * Created by marcin on 15/03/15.
 */
 public class Player {
-    PlayerPosition position;
-    List<Card> hand;
+    private PlayerPosition position;
+    private List<Card> hand;
 
     public Player(PlayerPosition position, List<Card> hand) {
         this.position = position;
