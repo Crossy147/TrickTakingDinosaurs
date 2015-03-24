@@ -1,6 +1,40 @@
 @()
+<style>
+    .login-field {
+      position: fixed;
+      top: 40%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
 
-<div ng-app="login" ng-controller="login">
-	<input ng-model="username" type="text"/>
-	<button ng-click="signIn()">Sign in</button>
-</div>
+    .login-button {
+      margin-top: 10px;
+      margin-left: 69px;
+      width: 70px;
+      height: 26px;
+      border-radius: 13px;
+      border: none;
+      background-color: #6FC6FB;
+      font-family: open sans-serif;
+      font-size: 15px;
+    }
+
+    .username-textfield{
+      border-radius: 5px;
+      width: 204px;
+      height: 21px;
+      text-align: center;
+    }
+
+</style>
+
+  <div ng-app="login" ng-controller="login" class="login-field">  
+      <div>
+         <div>
+           <input ng-model="username" type="text" class="username-textfield"/>
+         </div>
+         <div>
+            <button ng-click="signIn()" class="login-button">Sign in</button>
+         </div>
+      </div>
+  </div>
