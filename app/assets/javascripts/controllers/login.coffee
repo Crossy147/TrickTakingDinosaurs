@@ -6,7 +6,7 @@
     $http(method: 'POST', url: '/sessions')
     .success (data, status) ->
       setCookie('trick_taking_dinosaurs_token', data.token, 1000 * 60 * 60 * 24)
-      $location.path('/games')
+      $location.path('/tables')
 
 ]
 
