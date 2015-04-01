@@ -1,2 +1,1 @@
-@App = {}
-@App.Login = angular.module('login', [])
+@App = angular.module('app', ['ngRoute'])
