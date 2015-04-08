@@ -14,8 +14,9 @@ public class Application extends Controller {
         return ok(index.render("Your new application is ready."));
     }
     
-    public static Result signin(String user) {
-    	session(USER, user);
+    public static Result signin() {
+    	String username = request().body().asJson().get("username").asText();
+    	session(USER, username); //TODO encrypt
     	return ok(tables.render());
     }
 

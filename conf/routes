@@ -6,6 +6,7 @@
 GET     /                           controllers.Application.index()
 GET     /login.html                 controllers.Application.login()
 GET     /tables.html                controllers.Application.tables()
+POST	/sessions					controllers.Application.signin()
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.at(path="/public", file)
