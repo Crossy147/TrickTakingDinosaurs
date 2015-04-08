@@ -13,7 +13,7 @@ public class Table {
 	
 	private final UUID id;
 	private final String name;
-	private int playersCount;
+	private int playersCount = 1;
 	
 	public Table(String name) {
 		id = UUID.randomUUID();
