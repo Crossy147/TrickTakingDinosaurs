@@ -13,11 +13,17 @@ public class TableLobby extends Controller {
 
 	private static Set<Table> tables = new HashSet<Table>();
 	
-	public static Result create() throws JSONException {
+	public static Result create() {
 		String tableName = request().body().asJson().get("table_name").asText();
 		Table newTable = new Table(tableName);
-		tables.add(newTable);
-		return ok(newTable.toJson().toString());
+		Result result;
+		try{
+			result = ok(newTable.toJson().toString());
+			tables.add(newTable);
+			return result;
+		} catch (JSONException e) {
+			return badRequest();
+		}
 	}
 	
 	public static Result list() {
