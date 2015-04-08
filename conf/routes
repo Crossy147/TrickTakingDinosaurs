@@ -4,8 +4,6 @@
 
 # Home page
 GET     /                           controllers.Application.index()
-GET     /login.html                 controllers.Application.login()
-GET     /tables.html                controllers.Application.tables()
 POST	/sessions					controllers.Application.signin()
 GET		/tables						controllers.TableLobby.listTables()
 

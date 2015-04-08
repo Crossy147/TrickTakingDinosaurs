@@ -1,7 +1,7 @@
 @App.controller 'TablesController', ['$scope', '$http', '$location', ($scope, $http, $location) ->
   $scope.tables = []
 
-  $http(method: 'GET', url: '/tables.json')
+  $http(method: 'GET', url: '/tables')
   .success (data, status) ->
     $scope.tables = data
 
