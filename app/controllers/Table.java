@@ -2,9 +2,18 @@ package controllers;
 
 import java.util.UUID;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 public class Table {
+	
+	private static final String FIELD_ID = "id";
+	private static final String FIELD_NAME = "name";
+	private static final String FIELD_PLAYERS_COUNT = "players_count";
+	
 	private final UUID id;
 	private final String name;
+	private int playersCount;
 	
 	public Table(String name) {
 		id = UUID.randomUUID();
@@ -31,6 +40,14 @@ public class Table {
 	@Override
 	public int hashCode() {
 		return id.hashCode();
+	}
+	
+	public JSONObject toJson() throws JSONException {
+		JSONObject json = new JSONObject();
+		json.put(FIELD_ID, id);
+		json.put(FIELD_NAME, name);
+		json.put(FIELD_PLAYERS_COUNT, playersCount);
+		return json;
 	}
 	
 }
