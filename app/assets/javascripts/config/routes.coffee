@@ -6,6 +6,9 @@
   .when '/tables',
     templateUrl: 'assets/templates/tables.html'
     controller: 'TablesController'
+  .when '/tables/:id',
+    templateUrl: 'assets/templates/game.html'
+    controller: 'GameController'
   .otherwise
     redirectTo: '/login'
 
