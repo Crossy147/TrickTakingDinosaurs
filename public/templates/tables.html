@@ -1,0 +1,13 @@
+<div>
+  Open Tables:
+  <ul id="table-list">
+    <li class="table" ng-repeat="table in tables">
+      <span>{{table.name}} ({{table.players_count}}/4)</span>
+      <button ng-if="table.players_count < 4" ng-click="joinGame(table.id)">Join!</button>
+    </li>
+  </ul>
+  <form name="gameForm">
+    <input ng-model="tableName" required type="text" placeholder="Name of your table">
+    <button ng-click="createGame()">Create new table!</button>
+  </form>
+</div>
