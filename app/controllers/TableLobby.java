@@ -9,6 +9,8 @@ import org.json.JSONException;
 import play.mvc.Controller;
 import play.mvc.Result;
 
+import model.Table;
+
 public class TableLobby extends Controller {
 
 	private static Set<Table> tables = new HashSet<Table>();

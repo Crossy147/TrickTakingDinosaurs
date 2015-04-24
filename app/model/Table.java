@@ -1,4 +1,4 @@
-package controllers;
+package model;
 
 import java.util.UUID;
 
@@ -49,5 +49,4 @@ public class Table {
 		json.put(FIELD_PLAYERS_COUNT, playersCount);
 		return json;
 	}
-	
 }
