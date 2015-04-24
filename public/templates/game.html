@@ -1,9 +1,9 @@
 <div class="game">
     <div class="table">
-        <div class="top"> N </div>
-        <div class="right"> E </div>
-        <div class="bottom"> S </div>
-        <div class="left"> W </div>
+        <div class="top"><canvas id="northCanvas" width="800" height="200"></canvas> N </div>
+        <div class="right"><canvas id="eastCanvas" width="300" height="800"></canvas>E </div>
+        <div class="bottom"><canvas id="southCanvas" width="800" height="300"></canvas> S </div>
+        <div class="left"><canvas id="westCanvas" width="300" height="800"></canvas> W </div>
     </div>
 
     <div class="players-layout">
@@ -23,5 +23,6 @@
         </table>
     </div>
     <button ng-click="deal()">Deal!</button>
+
 </div>
 
