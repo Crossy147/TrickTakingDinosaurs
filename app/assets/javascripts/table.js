@@ -52,9 +52,8 @@ HandDrawer.prototype.drawHand = function(hand) {
         '--'--'---'
         ↑  ↑
         
-       Distance between these arrows is "nextCardDisplacementH" meaning, which
-       is just a displacement between two stacked cards. And this is why 
-       computation performed below makes sense. */
+       Distance between these arrows is "nextCardDisplacementH", which is 
+       just a displacement between two stacked cards. */
     if (this.position == 'top' || this.position == 'bottom')
         handLengthInPixels = (hand.length - 1) * this.nextCardDisplacementH + this.cardWidth;
     else
