@@ -75,8 +75,6 @@ HandDrawer.prototype.drawHand = function(hand) {
     this.numOfDrawnCards = 0;
     for (var i = 0; i < hand.length; i++)
         this.drawCard(hand[i], startX, startY);
-
-
 };
 
 HandDrawer.prototype.drawCard = function(card, startX, startY) {
