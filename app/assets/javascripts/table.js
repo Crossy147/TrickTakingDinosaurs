@@ -42,17 +42,27 @@ var HandDrawer = function(config, position) {
 HandDrawer.prototype.drawHand = function(hand) {
     var startX = 0;
     var startY = 0;
-    var handSize = 0;
+    var handLengthInPixels = 0;
     var spacing = this.cardScale * this.cardWidth * 0.5;
     
+    /* OK, let's prentend this to be the stack of cards:
+        .--.--.---.
+        |A |2 |3  | 
+        |  |  |   |
+        '--'--'---'
+        ↑  ↑
+        
+       Distance between these arrows is "nextCardDisplacementH" meaning, which
+       is just a displacement between two stacked cards. And this is why 
+       computation performed below makes sense. */
     if (this.position == 'top' || this.position == 'bottom')
-        handSize = (hand.length - 1) * this.nextCardDisplacementH + this.cardWidth;
+        handLengthInPixels = (hand.length - 1) * this.nextCardDisplacementH + this.cardWidth;
     else
-        handSize = (hand.length - 1) * this.nextCardDisplacementV + this.cardHeight;
+        handLengthInPixels = (hand.length - 1) * this.nextCardDisplacementV + this.cardHeight;
 
-    handSize *= this.cardScale;
-    startX = (this.canvas.width  - handSize) * 0.5;
-    startY = (this.canvas.height - handSize) * 0.5;
+    handLengthInPixels *= this.cardScale;
+    startX = (this.canvas.width  - handLengthInPixels) * 0.5;
+    startY = (this.canvas.height - handLengthInPixels) * 0.5;
     
     if (this.position == 'top')
         startY = spacing;
@@ -64,27 +74,27 @@ HandDrawer.prototype.drawHand = function(hand) {
         startX = this.canvas.width - this.cardWidth * this.cardScale - spacing;
     
     this.numOfDrawnCards = 0;
-    for (var i = 0; i < hand.length; i++) {
+    for (var i = 0; i < hand.length; i++)
         this.drawCard(hand[i], startX, startY);
-    }
 };
 
 HandDrawer.prototype.drawCard = function(card, startX, startY) {
-    var offsetX = 0;
-    var offsetY = 0;
-
+    var displacementX = 0;
+    var displacementY = 0;
+    
+    /* Displacements between stacked cards are computed there */
     if (this.position == 'top' || this.position == 'bottom')
-        offsetX = this.numOfDrawnCards * this.nextCardDisplacementH * this.cardScale;
+        displacementX = this.numOfDrawnCards * this.nextCardDisplacementH * this.cardScale;
     else 
-        offsetY = this.numOfDrawnCards * this.nextCardDisplacementV * this.cardScale;
+        displacementY = this.numOfDrawnCards * this.nextCardDisplacementV * this.cardScale;
     
     this.context.drawImage(this.imageGrid,
                            card.getGridCol() * (this.cardWidth - 0.5),
                            card.getGridRow() * (this.cardHeight - 0.5),
                            this.cardWidth,
                            this.cardHeight,
-                           startX + offsetX,
-                           startY + offsetY,
+                           startX + displacementX,
+                           startY + displacementY,
                            this.cardWidth * this.cardScale,
                            this.cardHeight * this.cardScale);
     this.numOfDrawnCards++;
@@ -113,6 +123,7 @@ TableDrawer.prototype.draw = function(hands) {
 
     this.fit();
     this.clear();
+
     /* TODO: should not be hardcoded */
     this.context.fillStyle = '#408800';
     this.context.fillRect(0, 0, this.width, this.height);
