@@ -43,8 +43,8 @@ HandDrawer.prototype.drawHand = function(hand) {
     var startX = 0;
     var startY = 0;
     var handLengthInPixels = 0;
-    var spacing = this.cardScale * this.cardWidth * 0.5;
-    
+    var tableBorderInPixels = this.cardScale * this.cardWidth * 0.5;
+   
     /* OK, let's prentend this to be the stack of cards:
         .--.--.---.
         |A |2 |3  | 
@@ -64,17 +64,19 @@ HandDrawer.prototype.drawHand = function(hand) {
     startY = (this.canvas.height - handLengthInPixels) * 0.5;
     
     if (this.position == 'top')
-        startY = spacing;
+        startY = tableBorderInPixels;
     else if (this.position == 'bottom')
-        startY = this.canvas.height - this.cardHeight * this.cardScale - spacing;
+        startY = this.canvas.height - this.cardHeight * this.cardScale - tableBorderInPixels;
     else if (this.position == 'left') 
-        startX = spacing;
+        startX = tableBorderInPixels;
     else
-        startX = this.canvas.width - this.cardWidth * this.cardScale - spacing;
+        startX = this.canvas.width - this.cardWidth * this.cardScale - tableBorderInPixels;
     
     this.numOfDrawnCards = 0;
     for (var i = 0; i < hand.length; i++)
         this.drawCard(hand[i], startX, startY);
+
+
 };
 
 HandDrawer.prototype.drawCard = function(card, startX, startY) {
