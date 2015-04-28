@@ -1,9 +1,13 @@
 package model;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import play.mvc.WebSocket;
 
 public class Table {
 	
@@ -14,6 +18,8 @@ public class Table {
 	private final UUID id;
 	private final String name;
 	private int playersCount = 1;
+	
+	private List<WebSocket.Out<String>> connections = new ArrayList<WebSocket.Out<String>>();
 	
 	public Table(String name) {
 		id = UUID.randomUUID();
@@ -26,6 +32,19 @@ public class Table {
 
 	public String getName() {
 		return name;
+	}
+	
+	public synchronized boolean join(WebSocket<String> newPlayer) {
+		if (connections.size() < 4) {
+			for (WebSocket.Out<String> out : connections) {
+				out.write("New player joined!");
+			}
+			//TODO add connection
+			return true;
+		}
+		else {
+			return false;
+		}
 	}
 	
 	@Override

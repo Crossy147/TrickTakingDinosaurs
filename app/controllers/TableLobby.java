@@ -3,13 +3,16 @@ package controllers;
 import java.util.HashSet;
 import java.util.Set;
 
+import model.Table;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 
+import akka.actor.ActorRef;
+import controllers.game.PlayerActor;
 import play.mvc.Controller;
 import play.mvc.Result;
-
-import model.Table;
+import play.mvc.WebSocket;
 
 public class TableLobby extends Controller {
 
@@ -25,6 +28,24 @@ public class TableLobby extends Controller {
 			return result;
 		} catch (JSONException e) {
 			return badRequest();
+		}
+	}
+	
+	public static WebSocket<String> join() {
+		String tableId = request().body().asJson().get("table_id").asText();
+		Table table = null;
+		for (Table t : tables) {
+			if (t.getId().toString().equals(tableId)) {
+				table = t;
+				break;
+			}
+		}
+		WebSocket<String> newConnection = WebSocket.withActor(PlayerActor::props);
+		if (table != null && table.join(newConnection)) {
+			return newConnection;			
+		}
+		else {
+			return WebSocket.reject(badRequest());
 		}
 	}
 	
