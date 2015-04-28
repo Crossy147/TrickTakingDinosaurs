@@ -2,13 +2,13 @@
   $routeProvider
   .when '/login',
     templateUrl: 'assets/templates/login.html'
-    controller: 'LoginController'
+    controller: 'LoginCtrl'
   .when '/tables',
     templateUrl: 'assets/templates/tables.html'
-    controller: 'TablesController'
+    controller: 'TablesCtrl'
   .when '/tables/:id',
     templateUrl: 'assets/templates/game.html'
-    controller: 'GameController'
+    controller: 'GameCtrl'
   .otherwise
     redirectTo: '/login'
 
