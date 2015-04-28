@@ -8,6 +8,8 @@ POST	/sessions		    controllers.Application.signin()
 GET	/tables			    controllers.TableLobby.list()
 POST	/tables			    controllers.TableLobby.create()
 
+GET	/table/:id/ws			    controllers.TableLobby.join(id: String)
+
 # This is probably just temporary solution to a bigger problem that we
 # will encounter soon, when showing working GUI will be not sufficient.
 GET     /game/deal                  controllers.Game.deal()

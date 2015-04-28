@@ -33,8 +33,8 @@ public class TableLobby extends Controller {
 		}
 	}
 	
-	public static WebSocket<String> join() {
-		String tableId = request().body().asJson().get("table_id").asText();
+	public static WebSocket<String> join(String tableId) {
+		System.out.println("Table id: " + qqtableId);
 		Table table = null;
 		for (Table t : tables) {
 			if (t.getId().toString().equals(tableId)) {
@@ -44,12 +44,13 @@ public class TableLobby extends Controller {
 		}
 		final Table finTable = table;
 		try {
-			return WebSocket.withActor(new Function<ActorRef, Props>() {
+			return  WebSocket.withActor(new Function<ActorRef, Props>() {
 				public Props apply(ActorRef out) throws Throwable {
 					return PlayerActor.props(out, finTable);
 				}
 			});			
 		} catch (Exception e) {
+			System.err.println("err");
 			return WebSocket.reject(badRequest());
 		}
 	}

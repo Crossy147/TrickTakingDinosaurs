@@ -7,6 +7,7 @@ import java.util.UUID;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import play.Logger;
 import akka.actor.ActorRef;
 
 public class Table {
@@ -17,7 +18,6 @@ public class Table {
 	
 	private final UUID id;
 	private final String name;
-	private int playersCount = 1;
 	
 	private List<ActorRef> connections = new ArrayList<>();
 	
@@ -37,6 +37,7 @@ public class Table {
 	public synchronized boolean join(ActorRef newPlayer) {
 		if (connections.size() < 4) {
 			for (ActorRef out : connections) {
+				Logger.debug("sending join");
 				out.tell("joined", ActorRef.noSender());
 			}
 			connections.add(newPlayer);
@@ -65,7 +66,7 @@ public class Table {
 		JSONObject json = new JSONObject();
 		json.put(FIELD_ID, id);
 		json.put(FIELD_NAME, name);
-		json.put(FIELD_PLAYERS_COUNT, playersCount);
+		json.put(FIELD_PLAYERS_COUNT, connections.size());
 		return json;
 	}
 }
