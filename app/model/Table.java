@@ -7,7 +7,7 @@ import java.util.UUID;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import play.mvc.WebSocket;
+import akka.actor.ActorRef;
 
 public class Table {
 	
@@ -19,7 +19,7 @@ public class Table {
 	private final String name;
 	private int playersCount = 1;
 	
-	private List<WebSocket.Out<String>> connections = new ArrayList<WebSocket.Out<String>>();
+	private List<ActorRef> connections = new ArrayList<>();
 	
 	public Table(String name) {
 		id = UUID.randomUUID();
@@ -34,12 +34,12 @@ public class Table {
 		return name;
 	}
 	
-	public synchronized boolean join(WebSocket<String> newPlayer) {
+	public synchronized boolean join(ActorRef newPlayer) {
 		if (connections.size() < 4) {
-			for (WebSocket.Out<String> out : connections) {
-				out.write("New player joined!");
+			for (ActorRef out : connections) {
+				out.tell("joined", ActorRef.noSender());
 			}
-			//TODO add connection
+			connections.add(newPlayer);
 			return true;
 		}
 		else {

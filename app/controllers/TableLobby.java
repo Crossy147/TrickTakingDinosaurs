@@ -8,11 +8,13 @@ import model.Table;
 import org.json.JSONArray;
 import org.json.JSONException;
 
-import akka.actor.ActorRef;
-import controllers.game.PlayerActor;
+import play.libs.F.Function;
 import play.mvc.Controller;
 import play.mvc.Result;
 import play.mvc.WebSocket;
+import akka.actor.ActorRef;
+import akka.actor.Props;
+import controllers.game.PlayerActor;
 
 public class TableLobby extends Controller {
 
@@ -40,11 +42,14 @@ public class TableLobby extends Controller {
 				break;
 			}
 		}
-		WebSocket<String> newConnection = WebSocket.withActor(PlayerActor::props);
-		if (table != null && table.join(newConnection)) {
-			return newConnection;			
-		}
-		else {
+		final Table finTable = table;
+		try {
+			return WebSocket.withActor(new Function<ActorRef, Props>() {
+				public Props apply(ActorRef out) throws Throwable {
+					return PlayerActor.props(out, finTable);
+				}
+			});			
+		} catch (Exception e) {
 			return WebSocket.reject(badRequest());
 		}
 	}
