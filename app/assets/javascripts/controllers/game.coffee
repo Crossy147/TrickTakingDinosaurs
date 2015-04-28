@@ -1,3 +1,2 @@
-@App.controller 'GameController', ['$scope', '$http', '$location', ($scope, $http, $location) ->
+@App.controller 'GameCtrl', ($scope, $http, $location) ->
   $scope.game = []
-]
