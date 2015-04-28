@@ -34,7 +34,7 @@ public class TableLobby extends Controller {
 	}
 	
 	public static WebSocket<String> join(String tableId) {
-		System.out.println("Table id: " + qqtableId);
+		System.out.println("Table id: " + tableId);
 		Table table = null;
 		for (Table t : tables) {
 			if (t.getId().toString().equals(tableId)) {
