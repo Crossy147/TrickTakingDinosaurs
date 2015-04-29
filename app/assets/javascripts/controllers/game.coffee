@@ -1,9 +1,15 @@
-@App.controller 'GameCtrl', ($scope, $http, $location) ->
+@App.controller 'GameCtrl', ($scope, $http, $location, socket) ->
   $scope.game = []
+
+  tableId = $routeParams.id
+  socket.open(tableId, 'user_id')
+
+  socket.listen().then null, null, (data) ->
+    console.log data
 
   $scope.deal = () ->
     $http(method: 'GET', url: '/game/deal')
-    .success (data, status) -> 
+    .success (data, status) ->
       table = new Table('table',
           cardWidth: 168
           cardHeight: 244
@@ -16,11 +22,13 @@
       ###
       table.setHands
           north: Card.makeInvisibleHand(13)
-          south: [ new Card('ACE', 'DIAMONDS'), 
+          south: [ new Card('ACE', 'DIAMONDS'),
                    new Card('ACE', 'DIAMONDS'),
                    new Card('TWO', 'CLUBS') ]
           east: Card.makeInvisibleHand(13)
           west: Card.makeInvisibleHand(13)
       table.draw()
       return
-]
+
+  $scope.$on '$destroy', ->
+    socket.close()

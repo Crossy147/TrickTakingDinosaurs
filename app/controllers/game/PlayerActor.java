@@ -23,7 +23,7 @@ public class PlayerActor extends UntypedActor {
 	@Override
 	public void onReceive(Object message) throws Exception {
 		if (message instanceof String) {
-			out.tell("test", self());
+			out.tell("{\"message\":\"test\"}", self());
 		}
 	}
 

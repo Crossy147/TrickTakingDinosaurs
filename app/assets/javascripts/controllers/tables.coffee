@@ -6,9 +6,7 @@
     $scope.tables = data
 
   $scope.joinGame = (id) ->
-    $http(method: 'PUT', url: "/tables/#{id}")
-    .success (data, status) ->
-      $location.path "/tables/#{id}"
+    $location.path "/tables/#{id}"
 
   $scope.createGame = () ->
     return unless $scope.gameForm.$valid
@@ -18,5 +16,5 @@
 
     $http(method: 'POST', url: '/tables', data: data)
     .success (data, status) ->
-      id = data.id
-      $location.path "/tables/#{id}"
+      tableId = data.id
+      $location.path "/tables/#{tableId}"
