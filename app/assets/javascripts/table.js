@@ -5,7 +5,7 @@ var BoundingRect = function(startX, startY, width, height) {
     this.width = width;
     this.height = height;
 
-    this.pointInside = function(x, y) {
+    this.containsPoint = function(x, y) {
         return x >= this.startX && x <= this.startX + this.width &&
                y >= this.startY && y <= this.startY + this.height;
     };
@@ -198,7 +198,7 @@ var Table = function(canvasId, drawerConfig) {
             for (var i in table.drawer.boundingRects[position]) {
                 var rect = table.drawer.boundingRects[position][i];
     
-                if (rect.pointInside(x, y)) {
+                if (rect.containsPoint(x, y)) {
                     table.drawer.drawBoundingRect(rect);
                     break;
                 }
