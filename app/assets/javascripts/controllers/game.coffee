@@ -20,13 +20,13 @@
       ###
           TODO: data should be more interesting
       ###
-      table.setHands
-          north: Card.makeInvisibleHand(13)
-          south: [ new Card('ACE', 'DIAMONDS'),
-                   new Card('ACE', 'DIAMONDS'),
-                   new Card('TWO', 'CLUBS') ]
-          east: Card.makeInvisibleHand(13)
-          west: Card.makeInvisibleHand(13)
+      table.setPlayers(
+          north: new Player('dangerous player', Card.makeInvisibleHand(13))
+          south: new Player('best player', [ new Card('ACE', 'DIAMONDS'),
+                                             new Card('ACE', 'DIAMONDS'),
+                                             new Card('TWO', 'CLUBS') ])
+          east: new Player('stupid player', Card.makeInvisibleHand(13))
+          west: new Player('cowboy from united states', Card.makeInvisibleHand(13)))
       table.draw()
       return
 

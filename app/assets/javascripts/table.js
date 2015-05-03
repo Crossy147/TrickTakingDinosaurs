@@ -11,6 +11,13 @@ var BoundingRect = function(startX, startY, width, height) {
     };
 };
 
+var Player = function(name, hand) {
+    this.name = name;
+    this.hand = hand;
+};
+Player.prototype.getName = function() { return this.name; };
+Player.prototype.getHand = function() { return this.hand; };
+
 var Card = function(rank, suite) {
     this.rank = rank;
     this.suite = suite;
@@ -147,8 +154,8 @@ TableDrawer.prototype.fit = function() {
     this.canvas.height = this.height;
 };
  
-TableDrawer.prototype.draw = function(hands) {
-   if (hands === null)
+TableDrawer.prototype.draw = function(players) {
+   if (players === null)
         return;
 
     this.fit();
@@ -170,11 +177,16 @@ TableDrawer.prototype.draw = function(hands) {
     
     var drawer = this;
     image.onload = function() {
-        drawer.boundingRects.north = (new HandDrawer(config, 'top')).drawHand(hands.north);
-        drawer.boundingRects.south = (new HandDrawer(config, 'right')).drawHand(hands.east);
-        drawer.boundingRects.east = (new HandDrawer(config, 'bottom')).drawHand(hands.south);
-        drawer.boundingRects.west = (new HandDrawer(config, 'left')).drawHand(hands.west);
+        drawer.boundingRects.north = (new HandDrawer(config, 'top')).drawHand(players.north.getHand());
+        drawer.boundingRects.south = (new HandDrawer(config, 'right')).drawHand(players.east.getHand());
+        drawer.boundingRects.east = (new HandDrawer(config, 'bottom')).drawHand(players.south.getHand());
+        drawer.boundingRects.west = (new HandDrawer(config, 'left')).drawHand(players.west.getHand());
     };
+    this.drawPlayerNames(players);
+};
+
+TableDrawer.prototype.drawPlayerNames = function(players) {
+    /* TODO: Should draw player names obviously */
 };
 
 TableDrawer.prototype.drawBoundingRect = function(rect) {
@@ -186,7 +198,7 @@ TableDrawer.prototype.drawBoundingRect = function(rect) {
 var Table = function(canvasId, drawerConfig) {
     this.canvas = document.getElementById(canvasId);
     this.drawer = new TableDrawer(this.canvas, drawerConfig);
-    this.hands = null;
+    this.players = null;
 
     var table = this;
     this.eventHandler = function(evt) {
@@ -209,11 +221,11 @@ var Table = function(canvasId, drawerConfig) {
 };
 
 Table.prototype.draw = function() {
-    this.drawer.draw(this.hands);
+    this.drawer.draw(this.players);
 };
 
-Table.prototype.setHands = function(hands) {
-    this.hands = hands;
+Table.prototype.setPlayers = function(players) {
+    this.players = players;
     this.draw();
 };
 
