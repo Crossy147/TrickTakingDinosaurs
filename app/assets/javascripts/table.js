@@ -1,4 +1,16 @@
 
+var BoundingRect = function(startX, startY, width, height) {
+    this.startX = startX;
+    this.startY = startY;
+    this.width = width;
+    this.height = height;
+
+    this.pointInside = function(x, y) {
+        return x >= this.startX && x <= this.startX + this.width &&
+               y >= this.startY && y <= this.startY + this.height;
+    };
+};
+
 var Card = function(rank, suite) {
     this.rank = rank;
     this.suite = suite;
@@ -73,8 +85,20 @@ HandDrawer.prototype.drawHand = function(hand) {
         startX = this.canvas.width - this.cardWidth * this.cardScale - tableBorderInPixels;
     
     this.numOfDrawnCards = 0;
-    for (var i = 0; i < hand.length; i++)
-        this.drawCard(hand[i], startX, startY);
+    var boundingRect;
+    var handBoundingRects = [];
+    for (var i = 0; i < hand.length; i++) {
+        boundingRect = this.drawCard(hand[i], startX, startY);
+        
+        if (i < hand.length-1) {
+            if (this.position == 'top' || this.position == 'bottom')
+                boundingRect.width = this.nextCardDisplacementH * this.cardScale;
+            else
+                boundingRect.height = this.nextCardDisplacementV * this.cardScale;
+        }
+        handBoundingRects.push(boundingRect);
+    }
+    return handBoundingRects;
 };
 
 HandDrawer.prototype.drawCard = function(card, startX, startY) {
@@ -97,6 +121,11 @@ HandDrawer.prototype.drawCard = function(card, startX, startY) {
                            this.cardWidth * this.cardScale,
                            this.cardHeight * this.cardScale);
     this.numOfDrawnCards++;
+
+    /* Bounding rectangle of drawn card is returned. */
+    return new BoundingRect(startX + displacementX, startY + displacementY, 
+                            this.cardWidth * this.cardScale,
+                            this.cardHeight * this.cardScale);
 };
 
 var TableDrawer = function(canvas, config) {
@@ -105,6 +134,8 @@ var TableDrawer = function(canvas, config) {
     this.context = canvas.getContext('2d');
     this.width = canvas.width;
     this.height = canvas.height;
+    this.boundingRects = { north: null, south: null, 
+                           east: null, west: null };
 };
 
 TableDrawer.prototype.clear = function() {
@@ -136,19 +167,45 @@ TableDrawer.prototype.draw = function(hands) {
                    imageGrid : image,
                    nextCardDisplacementH : this.config.nextCardDisplacementH,
                    nextCardDisplacementV : this.config.nextCardDisplacementV };
-
+    
+    var drawer = this;
     image.onload = function() {
-        (new HandDrawer(config, 'top')).drawHand(hands.north);
-        (new HandDrawer(config, 'right')).drawHand(hands.east);
-        (new HandDrawer(config, 'bottom')).drawHand(hands.south);
-        (new HandDrawer(config, 'left')).drawHand(hands.west);
+        drawer.boundingRects.north = (new HandDrawer(config, 'top')).drawHand(hands.north);
+        drawer.boundingRects.south = (new HandDrawer(config, 'right')).drawHand(hands.east);
+        drawer.boundingRects.east = (new HandDrawer(config, 'bottom')).drawHand(hands.south);
+        drawer.boundingRects.west = (new HandDrawer(config, 'left')).drawHand(hands.west);
     };
+};
+
+TableDrawer.prototype.drawBoundingRect = function(rect) {
+    this.context.strokeStyle = 'red';
+    this.context.lineWidth = 4;
+    this.context.strokeRect(rect.startX, rect.startY, rect.width, rect.height);
 };
 
 var Table = function(canvasId, drawerConfig) {
     this.canvas = document.getElementById(canvasId);
     this.drawer = new TableDrawer(this.canvas, drawerConfig);
     this.hands = null;
+
+    var table = this;
+    this.eventHandler = function(evt) {
+        var x = evt.clientX - table.canvas.getBoundingClientRect().left;
+        var y = evt.clientY - table.canvas.getBoundingClientRect().top;
+
+        /* Iterate through cards bounding rectangles */ 
+        for (var position in table.drawer.boundingRects) {
+            for (var i in table.drawer.boundingRects[position]) {
+                var rect = table.drawer.boundingRects[position][i];
+    
+                if (rect.pointInside(x, y)) {
+                    table.drawer.drawBoundingRect(rect);
+                    break;
+                }
+            }
+        }
+    };
+    this.canvas.addEventListener('mousedown', this.eventHandler);
 };
 
 Table.prototype.draw = function() {
