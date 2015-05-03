@@ -1,4 +1,4 @@
-@App.controller 'GameCtrl', ($scope, $http, $location, socket) ->
+@App.controller 'GameCtrl', ($scope, $http, $location, $routeParams, socket) ->
   $scope.game = []
 
   tableId = $routeParams.id
