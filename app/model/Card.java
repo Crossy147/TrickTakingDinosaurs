@@ -26,4 +26,10 @@ public class Card {
         Card t = (Card) that;
         return this.suite == t.suite && this.rank == t.rank;
     }
+
+    public boolean isGreater(Card card){
+        if(this.rank!=card.rank)
+            return this.rank.isGreater(card.rank);
+        return this.suite.isGreater(card.suite);
+    }
 }

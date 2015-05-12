@@ -9,22 +9,26 @@ import java.util.List;
 public class Trick {
     private List<Card> cardsPlayed;
 
-    public PlayerPosition getCurrentPlayer() {
+    public Player getCurrentPlayer() {
         return currentPlayer;
     }
 
-    private PlayerPosition currentPlayer;
-    private PlayerPosition firstPlayer;
+    private Player currentPlayer;
+    private List<Player> players;
 
-    public Trick(PlayerPosition firstPlayer) {
-        this.firstPlayer = firstPlayer;
-        this.currentPlayer = firstPlayer;
+    public Trick(List<Player> players) {
+        this.players = players;
+        this.currentPlayer = players.get(0);
         this.cardsPlayed = new ArrayList<>();
     }
 
-    public void playCard(Card card) {
+    public boolean playCard(Card card) {
+        if(!currentPlayer.playCard(card, this.getSuite())){
+            return false;
+        }
         cardsPlayed.add(card);
-        currentPlayer = currentPlayer.nextPlayer();
+        currentPlayer = players.get((players.indexOf(currentPlayer)+1)%4);
+        return true;
     }
 
     public Suite getSuite() {
@@ -36,5 +40,19 @@ public class Trick {
         return cardsPlayed.size() < 4;
     }
 
-    public PlayerPosition getWinner() { return PlayerPosition.EAST; }
+    public Player getWinner() {
+        Card winnerCard = cardsPlayed.get(0);
+        Player winner = players.get(0);
+
+        for(int i=1; i<cardsPlayed.size(); i++){
+            Card card = cardsPlayed.get(i);
+            if(card.isGreater(winnerCard)){
+                winnerCard = card;
+                winner = players.get(i);
+            }
+        }
+
+        return winner;
+
+    }
 }

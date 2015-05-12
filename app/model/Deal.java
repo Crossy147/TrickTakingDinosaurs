@@ -17,7 +17,7 @@ public class Deal {
     public Deal(List<Player> players) {
         this.players = players;
         this.tricks = new ArrayList<>();
-        this.currentTrick = new Trick(players.get(0).getPosition());
+        this.currentTrick = new Trick(players);
     }
 
     public List<Trick> getTricks() {
@@ -28,19 +28,7 @@ public class Deal {
         return players;
     }
 
-    public boolean playCard(Card c) {
-        return true;
-    }
-
-    public Player getCurrentPlayer() {
-        return players.get(0);
-    }
-
     public boolean inProgress() {
         return tricks.size() < TRICKS_TO_TAKE;
-    }
-
-    public boolean canPlay(Player player, Card card) {
-        return true;
     }
 }
