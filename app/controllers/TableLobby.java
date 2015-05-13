@@ -6,9 +6,12 @@ import java.util.Set;
 import org.json.JSONArray;
 import org.json.JSONException;
 
+import filters.UserAuthenticator;
 import play.mvc.Controller;
 import play.mvc.Result;
+import play.mvc.Security;
 
+@Security.Authenticated(UserAuthenticator.class)
 public class TableLobby extends Controller {
 
 	private static Set<Table> tables = new HashSet<Table>();

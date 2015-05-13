@@ -5,6 +5,9 @@ import java.util.UUID;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import filters.UserAuthenticator;
+import play.mvc.Security;
+@Security.Authenticated(UserAuthenticator.class)
 public class Table {
 	
 	private static final String FIELD_ID = "id";
